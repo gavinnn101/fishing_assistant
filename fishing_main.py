@@ -162,7 +162,7 @@ def press_key_driver(hotkey, driver, keyboard_driver):
 
 
 def print_stats(start_time, fish_caught, bait_used, rods_cast):
-    time_ran = get_duration(start_time, interval='minutes')
+    time_ran = get_duration(then=start_time, now=datetime.now(), interval='default')
     gold_earned = fish_caught * 10
     logger.success('-----------------------')
     logger.success(f'Time Ran: {time_ran} minute(s)')
@@ -204,13 +204,14 @@ try:
     with mss.mss() as sct:
         while True:
             if use_bait:
-                if get_duration(bait_time, interval='minutes') >= 30:
+                time_since_bait = get_duration(then=bait_time, now=datetime.now(), interval='minutes')
+                if time_since_bait >= 30:
                     logger.info('Applying fishing bait...')
                     press_key_driver(bait_hotkey_driver, driver, keyboard_driver)
                     # pg.press(bait_hotkey)
                     bait_used += 1
                     bait_time = datetime.now()
-                    print_stats(time_ran, fish_caught, bait_used, rods_cast)
+                    print_stats(start_time, fish_caught, bait_used, rods_cast)
             # Cast fishing rod
             press_key_driver(fishing_hotkey_driver, driver, keyboard_driver)
             # pg.press(fishing_hotkey)
@@ -248,8 +249,8 @@ try:
                 except:
                     continue
                 
-                if rms_value >= 10:  # This will never print if the user has their sound low.
-                    logger.info(f'Sound Level: {rms_value}')
+                # if rms_value >= 10:  # This will never print if the user has their sound low.
+                #     logger.debug(f'Sound Level: {rms_value}')
                 if found_fish and rms_value < audio_threshold:
                     found_fish = False
 
