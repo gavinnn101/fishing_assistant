@@ -1,0 +1,19 @@
+# Volume Settings
+*  Install https://vb-audio.com/Cable/index.htm (todo: automate this? maybe it can be installed via cli?)
+*  Set windows volume in VM to 100
+*  In-game sound settings should look like this: https://gyazo.com/34f574700038c463de102db9a25a21a9
+* *  "Cable Input" selected
+* *  Master Volume at 50%
+* *  Sound set to "High"
+* *  All other sound effects turned off
+* *  `audio_threshold` can be changed if needed but should be good if volume settings are consistent.
+
+
+# Driver Notes
+*  This is optional but should lead to a much lower chance of a ban. Set `use_driver = True` or `use_driver = False` to use virtual/pyautogui inputs.
+*  Open a terminal in the interception installer location (fishing_bot/interception/Command Line Installer) and run `.\install-interception \install`. Must reboot the vm after.
+
+# Potential Issues
+* Loud noises around character may trigger a caught fish reaction (not tested/proven)
+* Bot will see a high volume level left over from the last run and think there is a fish caught
+* * I believe to fix this, I need to clear the audio stream after every catch/reset.
