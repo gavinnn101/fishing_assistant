@@ -65,7 +65,7 @@ swidth = 2
 Max_Seconds = 15
 catch_time=0
 catch_timeout=((RATE / chunk * Max_Seconds) + 5)
-audio_threshold = 30
+audio_threshold = 20
 audio_devices = get_audio_devices()
 # Audio variables
 #################
@@ -90,6 +90,8 @@ bait_used = 0
 rods_cast = 0
 # Fishing Stats
 ###################
+
+relog_counter = 0
 
 
 def rms(frame):
@@ -165,6 +167,7 @@ def print_stats(start_time, fish_caught, bait_used, rods_cast):
     time_ran = get_duration(then=start_time, now=datetime.now(), interval='default')
     gold_earned = fish_caught * 10
     logger.success('-----------------------')
+    logger.success('Progress Report:')
     logger.success(f'Time Ran: {time_ran} minute(s)')
     logger.success(f'Estimated Gold Earned: {gold_earned}g')
     logger.success(f'Rods Cast: {rods_cast}')
@@ -251,7 +254,7 @@ try:
                 
                 # if rms_value >= 10:  # This will never print if the user has their sound low.
                 #     logger.debug(f'Sound Level: {rms_value}')
-                if found_fish and rms_value < audio_threshold:
+                if found_fish and rms_value < 1.0:
                     found_fish = False
 
                 if not found_fish and rms_value > audio_threshold:
@@ -271,8 +274,20 @@ try:
                 if catch_time > catch_timeout:
                     no_fish_casts += 1
                     logger.warning("Timed out, never detected a splash.")
+
+                    # If we miss 5 catches in a row we can probably assume something is really wrong like our in-game pov is messed up or we're logged out
+                    # This assumes we got logged out and attempts to log us back in.
+                    # If it's a temporary problem and we're in-game hitting 'enter' I could see us getting stuck in the chatbox. Maybe unbind 'enter' on the bot toons
+                    relog_counter += 1
+                    if relog_counter >= 5:  # Assumes we got logged out and we'll try to reconnect
+                        logger.warning("We've failed to catch 5 fish in a row. Activating failsafe.")
+                        for i in range(0,4):  # Hit enter 3 times (Max amount needed to get back to the game from a recoverable login screen state.)
+                            press_key_driver(KEYBOARD_MAPPING['enter'], driver, keyboard_driver)
+                            time.sleep(5)
+                        relog_counter = 0
                     break
-                catch_time = catch_time + 1
+                # Adds and resets timer for how long the fishing rod has been in the water for its current cast. (used for timeout/reset)
+                catch_time += 1
             catch_time = 0
             #p.close(stream)
 except Exception as e:
