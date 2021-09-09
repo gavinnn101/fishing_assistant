@@ -33,7 +33,7 @@ If you think of any features you feel would be highly beneficial that aren't on 
 * Bot Management: 🟠
 * * Users will be able to login to <gavinnn.com/bot> and control all of their bots from the webpanel. This way you can start/stop your bots from anywhere. 
 * * * See screenshot from this other bot for a rough example: https://raw.githubusercontent.com/julianperrott/WowClassicGrindBot/master/images/Screenshot.png
-* * 🔴 You will be able to start and stop the bots at any time 
+* * 🔴 Start and stop any of your bots at any time.
 * * 🔴 See real-time stats for each individual bot (run time, gold earned, fish caught, etc)
 * * 🔴 See real-time screenshots for each individual bot
 * * 🔴 See real-time logs for each individual bot
@@ -77,6 +77,6 @@ If you think of any features you feel would be highly beneficial that aren't on 
 * `audio_threshold` in `fishing_main.py` can be changed if needed but should be good if volume settings are consistent.
 
 # Potential Issues
-* Loud noises around character may trigger a caught fish reaction (not tested/proven)
+* Loud spikes of in-game noise may cause the bot to try and catch the bobber. I usually see this happen when I get a "friend has come online" popup.
 * Bot will see a high volume level left over from the last run and think there is a fish caught
 * * I believe to fix this, I need to clear the audio stream after every catch/reset.
