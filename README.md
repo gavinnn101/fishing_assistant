@@ -15,7 +15,7 @@
 * Installing VBCable Audio Driver:
 * * Open the `fishing_assistant/misc_files/VBCable/VBCABLE_Driver_Pack43.zip` and run `VBCABLE_Setup_x64.exe`.
 * * If you need to download it for some reason:
-* * *Install https://vb-audio.com/Cable/index.htm (todo: automate this? maybe it can be installed via cli?)
+* * * Install https://vb-audio.com/Cable/index.htm (todo: automate this? maybe it can be installed via cli?)
 * Installing PyAudio:
 * * It doesn't work if you try to install it through pip so you have to install the wheel manually.
 * * I've included the .whl in the repo. run `pip install .\misc_files\PyAudio-0.2.11-cp39-cp39-win_amd64.whl`.
