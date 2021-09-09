@@ -2,7 +2,7 @@
 Please follow the below sections in order CAREFULLY and let me know if you have any questions or run into any problems.
 
 
-This is just a personal project that I'm having fun with above all else. I'm working on it when I feel like it, not selling it, and sharing it with friends, privately, for free. My goal for this project is to be able to easily run and manage a large amount of fishing bots and not get banned. 
+This is just a personal project that I'm having fun with above all else. I'm working on it when I feel like it, not selling it, and sharing it with friends, privately, for free. My goal for this project is to be able to easily run and manage a large amount of fishing bots with the least amount of manual work and not get banned. 
 
 * Security:
 * * Interception Driver - The security largely comes from using the interception driver that scans for your real keyboard/mouse and fakes the input from there instead of virtual inputs that most bots use and are typically detected. - done/implemented!
