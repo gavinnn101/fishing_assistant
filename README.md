@@ -8,10 +8,12 @@
 * *  All other sound effects turned off
 * *  `audio_threshold` can be changed if needed but should be good if volume settings are consistent.
 
-# Install PyAudio
-* It doesn't work if you try to install it through pip so you have to install the wheel manually.
-* I've included the .whl in the repo. run `pip install .\PyAudio-0.2.11-cp39-cp39-win_amd64.whl`.
-* * It's worth noting that this file is specific to Python 3.9.
+# Installing Dependencies
+* Open a terminal in the folder and run `pip install -r requirements.txt`
+* Installing PyAudio
+* * It doesn't work if you try to install it through pip so you have to install the wheel manually.
+* * I've included the .whl in the repo. run `pip install .\PyAudio-0.2.11-cp39-cp39-win_amd64.whl`.
+* * * It's worth noting that this file is specific to Python 3.9.
 
 
 # Driver Notes
