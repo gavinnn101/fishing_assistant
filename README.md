@@ -27,7 +27,8 @@ If you think of any features you feel would be highly beneficial that aren't on 
 
 
 * Bot Management: 🟠
-* * Managing the bots at scale will come from the next part of the project that I'm working on. I'm building a website where every user will be able to log into their account and manage all of their bots:
+* * Users will be able to login to <gavinnn.com/bot> and control all of their bots from the webpanel. This way you can start/stop your bots from anywhere. 
+* * * See screenshot from this other bot for a rough example: https://raw.githubusercontent.com/julianperrott/WowClassicGrindBot/master/images/Screenshot.png
 * * 🔴 You will be able to start and stop the bots at any time 
 * * 🔴 See real-time stats for each individual bot (run time, gold earned, fish caught, etc)
 * * 🔴 See real-time screenshots for each individual bot
