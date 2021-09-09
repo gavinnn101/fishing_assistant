@@ -6,7 +6,7 @@ This is just a personal project that I'm having fun with above all else. I'm wor
 
 
 Managing the bots at scale will come from the next part of the project that I'm working on. I'm building a website where every user will be able to log into their account and manage all of their bots:
-* You will(tm) be able to start and stop the bots at any time
+* You will be able to start and stop the bots at any time
 * See real-time stats for each individual bot (run time, gold earned, fish caught, etc)
 * See real-time screenshots for each individual bot
 * See real-time logs for each individual bot
