@@ -8,6 +8,10 @@
 * *  All other sound effects turned off
 * *  `audio_threshold` can be changed if needed but should be good if volume settings are consistent.
 
+# Install PyAudio
+* It doesn't work if you try to install it through pip so you have to install the wheel manually.
+* I've included the .whl in the repo. run `pip install .\PyAudio-0.2.11-cp39-cp39-win_amd64.whl`
+
 
 # Driver Notes
 *  This is optional but should lead to a much lower chance of a ban. Set `use_driver = True` or `use_driver = False` to use virtual/pyautogui inputs.
