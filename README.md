@@ -9,6 +9,9 @@
 * *  `audio_threshold` can be changed if needed but should be good if volume settings are consistent.
 
 # Installing Dependencies
+* Installing Python:
+* * Install the latest version of python at `https://www.python.org/downloads/`
+* * * One of the first menus in the installer has a checkbox to `add python to PATH`, make sure to check that box.
 * Open a terminal in the folder and run `pip install -r requirements.txt`
 * Installing VBCable Audio Driver:
 * * Open the `fishing_assistant/misc_files/VBCable/VBCABLE_Driver_Pack43.zip` and run `VBCABLE_Setup_x64.exe`.
