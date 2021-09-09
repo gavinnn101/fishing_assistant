@@ -33,7 +33,7 @@ def get_duration(then, now = datetime.now(), interval = "default"):
         m = minutes(h[1])
         s = seconds(m[1])
 
-        return "Time between dates: {} years, {} days, {} hours, {} minutes and {} seconds".format(int(y[0]), int(d[0]), int(h[0]), int(m[0]), int(s[0]))
+        return "{} years, {} days, {} hours, {} minutes and {} seconds".format(int(y[0]), int(d[0]), int(h[0]), int(m[0]), int(s[0]))
 
     return {
         'years': int(years()[0]),

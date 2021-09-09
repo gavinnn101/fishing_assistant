@@ -1,4 +1,5 @@
 import sys
+from utils.easy_driver import EasyDriver
 import cv2 as cv
 import numpy as np
 import mss
@@ -64,7 +65,7 @@ RATE = 16000
 swidth = 2
 Max_Seconds = 15
 catch_time=0
-catch_timeout=((RATE / chunk * Max_Seconds) + 5)
+catch_timeout=((RATE / chunk * Max_Seconds) + 7)
 audio_threshold = 20
 audio_devices = get_audio_devices()
 # Audio variables
@@ -112,56 +113,6 @@ def rms(frame):
     rms = math.pow(sum_squares / count, 0.5)
     return rms * 1000
 
-def get_driver_mouse():
-    # loop through all devices and check if they correspond to a mouse
-    mouse = 0
-    for i in range(MAX_DEVICES):
-        if interception.is_mouse(i):
-            mouse = i
-            return mouse
-
-    # exit if we can't find a mouse.
-    if (mouse == 0):
-        logger.critical("No mouse found. Contact Gavin and disable the driver.")
-        exit(0)
-
-
-def get_driver_keyboard():
-    # loop through all devices and check if they correspond to a mouse
-    keyboard = 0
-    for i in range(MAX_DEVICES):
-        if interception.is_keyboard(i):
-            keyboard = i
-            return keyboard
-
-
-def move_mouse(bobber_loc, driver, mouse_driver):
-    """Moves mouse to b"""
-    # get screen size
-    screen_width = GetSystemMetrics(0)
-    screen_height = GetSystemMetrics(1)
-    # we create a new mouse stroke, initially we use set right button down, we also use absolute move,
-    # and for the coordinate (x and y) we use center screen
-    mstroke = mouse_stroke(interception_mouse_state.INTERCEPTION_MOUSE_RIGHT_BUTTON_DOWN.value,
-                            interception_mouse_flag.INTERCEPTION_MOUSE_MOVE_ABSOLUTE.value,
-                            0,
-                            int((0xFFFF * bobber_loc[0]) / screen_width),
-                            int((0xFFFF * bobber_loc[1]) / screen_height),
-                            0)
-    driver.send(mouse_driver,mstroke) # we send the key stroke, now the right button is down
-
-    mstroke.state = interception_mouse_state.INTERCEPTION_MOUSE_RIGHT_BUTTON_UP.value # update the stroke to release the button
-    driver.send(mouse_driver,mstroke) #button right is up
-
-
-def press_key_driver(hotkey, driver, keyboard_driver):
-    # Key down
-    driver_press = key_stroke(hotkey, interception_key_state.INTERCEPTION_KEY_DOWN.value, 0)
-    driver.send(keyboard_driver, driver_press)
-    # Key up
-    driver_press.state = interception_key_state.INTERCEPTION_KEY_UP.value
-    driver.send(keyboard_driver, driver_press)
-
 
 def print_stats(start_time, fish_caught, bait_used, rods_cast):
     time_ran = get_duration(then=start_time, now=datetime.now(), interval='default')
@@ -187,11 +138,9 @@ stream = p.open(format = FORMAT,
                 output_device_index = audio_devices['output_device_index'])
 
 
-# Initialize Drivers
+# Initialize Driver
 if use_driver:
-    driver = interception()
-    mouse_driver = get_driver_mouse()
-    keyboard_driver = get_driver_keyboard()
+    driver = EasyDriver()
 
 # Initialize bot
 logger.add('log.txt', level="INFO")
@@ -199,7 +148,7 @@ start_time = datetime.now()
 time.sleep(1 + random.random())
 SetForegroundWindow(game_window_handle)
 if use_bait:
-    press_key_driver(bait_hotkey_driver, driver, keyboard_driver)
+    driver.press_key_driver(bait_hotkey_driver)
     # pg.press(bait_hotkey)
     bait_time = datetime.now()
 
@@ -210,13 +159,13 @@ try:
                 time_since_bait = get_duration(then=bait_time, now=datetime.now(), interval='minutes')
                 if time_since_bait >= 30:
                     logger.info('Applying fishing bait...')
-                    press_key_driver(bait_hotkey_driver, driver, keyboard_driver)
+                    driver.press_key_driver(bait_hotkey_driver)
                     # pg.press(bait_hotkey)
                     bait_used += 1
                     bait_time = datetime.now()
                     print_stats(start_time, fish_caught, bait_used, rods_cast)
             # Cast fishing rod
-            press_key_driver(fishing_hotkey_driver, driver, keyboard_driver)
+            driver.press_key_driver(fishing_hotkey_driver)
             # pg.press(fishing_hotkey)
             rods_cast += 1
             time.sleep(2.7 + random.random())
@@ -263,7 +212,7 @@ try:
                     # Right click the bobber to collect the loot.
                     # Wrapped in try block because pyHM.right_click() gives an invalid inputs ValueError
                     try:
-                        move_mouse(bobber_center, driver, mouse_driver)
+                        driver.move_mouse(bobber_center)
                     except ValueError:
                         break
                     fish_caught += 1
@@ -282,7 +231,7 @@ try:
                     if relog_counter >= 5:  # Assumes we got logged out and we'll try to reconnect
                         logger.warning("We've failed to catch 5 fish in a row. Activating failsafe.")
                         for i in range(0,4):  # Hit enter 3 times (Max amount needed to get back to the game from a recoverable login screen state.)
-                            press_key_driver(KEYBOARD_MAPPING['enter'], driver, keyboard_driver)
+                            driver.press_key_driver(KEYBOARD_MAPPING['enter'])
                             time.sleep(5)
                         relog_counter = 0
                     break
