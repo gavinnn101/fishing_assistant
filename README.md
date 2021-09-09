@@ -19,8 +19,14 @@ This is just a personal project that I'm having fun with above all else. I'm wor
 * * See real-time screenshots for each individual bot
 * * See real-time logs for each individual bot
 * * Send a message in-game as your bot character from the website (to implement later)
+
+
+* General Notable Features:
+* * Auto list fish auctions (I'm not sure how this could realistically be accomplished with this type of bot unless the user had a brutosaur.. I'll look into it but prob not)
+* * Accurate gold per hour earned (The only way I know how is the TSM API but it's currently unavailable. The price of fish will have to be hard-coded until then I think..)
+* * Automatically apply fishing bait every 30 minutes - implemented and fully tested!
 * * automatically vendor trash items(bait/greys/etc)(provided you have a vendor mount like a mammoth)
-* * Automatically relog into the game if disconnected and resume fishing
+* * Automatically relog into the game if disconnected and resume fishing - implemented but not tested!
 * * Feature Enhancement: Detect if it's reset day and sleep until servers are online
 
 
