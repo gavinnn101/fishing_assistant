@@ -24,7 +24,7 @@
 
 # Driver Notes
 *  This is optional but should lead to a much lower chance of a ban. Set `use_driver = True` or `use_driver = False` to use virtual/pyautogui inputs.
-*  Open a terminal in the interception installer location `fishing_assistant\Interception\command line installer` and run `.\install-interception \install`. Must reboot the vm after.
+*  Open a terminal AS ADMIN in the interception installer location `fishing_assistant\Interception\command line installer` and run `.\install-interception.exe \install`. Must reboot the vm after.
 
 # Potential Issues
 * Loud noises around character may trigger a caught fish reaction (not tested/proven)
