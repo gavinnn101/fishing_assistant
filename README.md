@@ -10,7 +10,9 @@
 
 # Installing Dependencies
 * Open a terminal in the folder and run `pip install -r requirements.txt`
-* Installing PyAudio
+* Installing VBCable Audio Driver:
+* * Open the `fishing_assistant/misc_files/VBCable/VBCABLE_Driver_Pack43.zip` and run `VBCABLE_Setup_x64.exe`.
+* Installing PyAudio:
 * * It doesn't work if you try to install it through pip so you have to install the wheel manually.
 * * I've included the .whl in the repo. run `pip install .\PyAudio-0.2.11-cp39-cp39-win_amd64.whl`.
 * * * It's worth noting that this file is specific to Python 3.9.
