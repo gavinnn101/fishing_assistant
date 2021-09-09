@@ -64,7 +64,7 @@ RATE = 16000
 swidth = 2
 Max_Seconds = 15
 catch_time=0
-catch_timeout=((RATE / chunk * Max_Seconds) + 5)
+catch_timeout=((RATE / chunk * Max_Seconds) + 7)
 audio_threshold = 20
 audio_devices = get_audio_devices()
 # Audio variables
