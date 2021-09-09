@@ -7,7 +7,7 @@ This is just a personal project that I'm having fun with above all else. I'm wor
 * Security:
 * * Interception Driver - The security largely comes from using the interception driver that scans for your real keyboard/mouse and fakes the input from there instead of virtual inputs that most bots use and are typically detected. - done/implemented!
 * * Code Obfuscation - The code will by dynamically changed before each run to hopefully help against any signature checks
-* * Breaks - You will be able to set up break schedules for your bots so that they will log out after (ex: 30-45 minutes) for (ex: 5-15 minutes) and then after 2 hours for 1 hour, etc. In my experience, playtime hasn't seemed to make much of a difference in bans for me but I do plan to implement it just incase. 
+* * Breaks - You will be able to set up break schedules for your bots so that they will log out after (ex: 30-45 minutes) for (ex: 5-15 minutes) and then after playing for 2 hours, break for 1 hour, etc. In my experience, playtime hasn't seemed to make much of a difference in bans for me but I do plan to implement it just incase. 
 * * AI Generated Conversations - I have access to OpenAI's GPT-3 which is an AI that can generate conversations/responses based on input. With this project largely being about running many(2+) bots at once, I plan to implement a feature where your bots will randomly have fake AI generated, WoW related(and other) conversations in guild chat or whispers to look less bot like. 
 * * * This same idea could be used to respond to random players that whisper your bot but I'm leaning towards just ignoring them. To be decided... Can always be optional
 
