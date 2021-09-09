@@ -5,7 +5,7 @@
 * *  Master Volume at 50%
 * *  Sound set to "High"
 * *  All other sound effects turned off
-* *  `audio_threshold` can be changed if needed but should be good if volume settings are consistent.
+* `audio_threshold` in `fishing_main.py` can be changed if needed but should be good if volume settings are consistent.
 
 # Installing Dependencies
 * Installing Python:
