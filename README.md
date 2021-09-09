@@ -18,7 +18,7 @@ Managing the bots at scale will come from the next part of the project that I'm 
 # Installing Dependencies
 * Installing Python:
 * * Install the latest version of python 3.9.x at `https://www.python.org/downloads/`
-* * * One of the first menus in the installer has a checkbox to `add python to PATH`, make sure to check that box.
+* * * The first menu in the installer has a checkbox to `Add Python 3.9 to PATH`, make sure to check that box.
 * `Shift+Right Click` in the `fishing_assistant` folder and click `Open Powershell here` and run `pip install -r requirements.txt`
 * Installing VBCable Audio Driver:
 * * Open the `fishing_assistant/misc_files/VBCable/VBCABLE_Driver_Pack43.zip` and run `VBCABLE_Setup_x64.exe` and click the driver install button at the bottom right of the pop-up window.
