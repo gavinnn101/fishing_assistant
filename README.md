@@ -18,7 +18,7 @@ This is just a personal project that I'm having fun with above all else. I'm wor
 * * See real-time stats for each individual bot (run time, gold earned, fish caught, etc)
 * * See real-time screenshots for each individual bot
 * * See real-time logs for each individual bot
-* * Send a message in-game as your bot character from the website (to implement later)
+* * Send a message in-game as your bot character from the website (respond to whispers, guild chat, etc (to implement later)
 
 
 * General Notable Features:
