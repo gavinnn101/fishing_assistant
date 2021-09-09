@@ -9,7 +9,7 @@
 
 # Installing Dependencies
 * Installing Python:
-* * Install the latest version of python at `https://www.python.org/downloads/`
+* * Install the latest version of python 3.9.x at `https://www.python.org/downloads/`
 * * * One of the first menus in the installer has a checkbox to `add python to PATH`, make sure to check that box.
 * Open a terminal in the `fishing_assistant` folder and run `pip install -r requirements.txt`
 * Installing VBCable Audio Driver:
