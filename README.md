@@ -5,6 +5,10 @@ Please read everything below even if you don't think it's important. You'll spen
 This is just a personal project that I'm developing for free in my spare time to use for myself and close family/friends. Please do not leak any of the files! I'm putting a lot of time into security and it all goes out the window if the bot files get flagged or a security feature is patched.
 
 
+Bot Access / Invites:
+Again, please do not leak the bot to anyone. If someone wants access to the bot, let me know. If it's someone I already know, they'll almost surely get access but I want to keep it under control. 
+
+
 The goal of the project is to be able to bot at scale(2+) bots at a time with high level anti-ban, high up-time(designed to run 24/7 on virtual machines), easy monitoring and maintence of all bots via website, with as little human intervention as possible. 
 
 # Features and Roadmap
