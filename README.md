@@ -1,11 +1,19 @@
-# Volume Settings
-*  Set windows volume in VM to 100
-*  In-game sound settings should look like this: https://gyazo.com/34f574700038c463de102db9a25a21a9
-* *  "Cable Input" selected
-* *  Master Volume at 50%
-* *  Sound set to "High"
-* *  All other sound effects turned off
-* `audio_threshold` in `fishing_main.py` can be changed if needed but should be good if volume settings are consistent.
+# Introduction
+Please follow the below sections in order CAREFULLY and let me know if you have any questions or run into any problems.
+
+
+This is just a personal project that I'm having fun with above all else. I'm working on it when I feel like it, not selling it, and sharing it with friends, privately, for free. My goal for this project is to be able to easily run and manage a large amount of fishing bots and not get banned. The security largely comes from using the interception driver that scans for your real keyboard/mouse and fakes the input from there instead of virtual inputs that most bots use and are typically detected. 
+
+
+Managing the bots at scale will come from the next part of the project that I'm working on. I'm building a website where every user will be able to log into their account and manage all of their bots:
+* You will(tm) be able to start and stop the bots at any time
+* See real-time stats for each individual bot (run time, gold earned, fish caught, etc)
+* See real-time screenshots for each individual bot
+* See real-time logs for each individual bot
+* Send a message in-game as your bot character from the website (to implement later)
+* automatically vendor trash items(bait/greys/etc)(provided you have a vendor mount like a mammoth)
+* Automatically relog into the game if disconnected and resume fishing
+* * Feature Enhancement: Detect if it's reset day and sleep until servers are online
 
 # Installing Dependencies
 * Installing Python:
@@ -21,10 +29,18 @@
 * * I've included the .whl in the repo. In the same powershell window from above, enter: `pip install .\misc_files\PyAudio-0.2.11-cp39-cp39-win_amd64.whl`.
 * * * It's worth noting that this file is specific to Python 3.9.
 
-
 # Driver Notes
 *  This is optional but should lead to a much lower chance of a ban. Set `use_driver = True` or `use_driver = False` to use virtual/pyautogui inputs.
 *  Open a terminal AS ADMIN in the interception installer location `fishing_assistant\Interception\command line installer` and run `.\install-interception.exe /install`. Must reboot the vm after.
+
+# Volume Settings
+*  Set windows volume in VM to 100
+*  In-game sound settings should look like this: https://gyazo.com/34f574700038c463de102db9a25a21a9
+* *  "Cable Input" selected
+* *  Master Volume at 50%
+* *  Sound set to "High"
+* *  All other sound effects turned off
+* `audio_threshold` in `fishing_main.py` can be changed if needed but should be good if volume settings are consistent.
 
 # Potential Issues
 * Loud noises around character may trigger a caught fish reaction (not tested/proven)
