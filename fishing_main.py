@@ -13,7 +13,6 @@ from win32gui import FindWindow, GetWindowRect, GetClientRect, SetForegroundWind
 from loguru import logger
 from pyHM import mouse
 from interception_py.interception import *
-from win32api import GetSystemMetrics
 from utils.key_codes import KEYBOARD_MAPPING
 from datetime import datetime
 from utils.datetime_util import get_duration
@@ -47,7 +46,7 @@ bait_hotkey = 'x'
 bait_hotkey_driver = KEYBOARD_MAPPING[bait_hotkey]
 use_bait = True
 found_fish = False
-bobber_confidence = 0.40
+bobber_confidence = 0.60  # Increase or take a better bobber screenshot if the bot is clicking random places(not the bobber). You probably shouldn't ever need to decrease.
 
 template = cv.imread('bobber.jpg', 0)
 w, h = template.shape[::-1]
@@ -65,8 +64,8 @@ RATE = 16000
 swidth = 2
 Max_Seconds = 15
 catch_time=0
-catch_timeout=((RATE / chunk * Max_Seconds) + 7)
-audio_threshold = 20
+catch_timeout=((RATE / chunk * Max_Seconds) + 7)  # If you find that the bot times out and recasts before the cast is actually over, you can increase 7 by 1 until it's good.
+audio_threshold = 20  # 20 should be fine based on readme.md volume settings but increase by 5 if it constantly thinks theres a catch before there really is.
 audio_devices = get_audio_devices()
 # Audio variables
 #################
@@ -78,6 +77,18 @@ game_window_class = "GxWindowClass"
 game_window_handle = FindWindow(game_window_class, game_window_name)
 game_window_rect = GetWindowRect(game_window_handle)  # left, top, right, bottom
 game_size = GetClientRect(game_window_handle)
+
+# Crop game client down to fishing area to reduce false positives
+top_offset = (game_size[2] // 2) - int((0.20 * game_size[2]))
+bot_offset = (game_size[3] // 2) - int((0.30 * game_size[3]))
+logger.info(f'Full Game Rect: {game_window_rect}')
+game_window_rect = (
+    game_window_rect[0] + bot_offset,
+    game_window_rect[1] + top_offset,
+    game_window_rect[2] - bot_offset,
+    game_window_rect[3] - bot_offset
+)
+logger.info(f'Cropped Game Rect: {game_window_rect}')
 # Game Client Variables
 #######################
 
@@ -92,7 +103,9 @@ rods_cast = 0
 # Fishing Stats
 ###################
 
+# Counters
 relog_counter = 0
+no_bobber_counter = 0
 
 
 def rms(frame):
@@ -114,6 +127,16 @@ def rms(frame):
     return rms * 1000
 
 
+def find_bobber(screenshot, template):
+    methods = ['cv.TM_CCOEFF_NORMED']  #, 'cv.TM_CCORR_NORMED', 'cv.TM_SQDIFF', 'cv.TM_SQDIFF_NORMED'
+    for meth in methods:
+        method = eval(meth)
+        # Apply template Matching
+        res = cv.matchTemplate(screenshot, template, method)
+        (min_val, max_val, min_loc, max_loc) = cv.minMaxLoc(res)
+        return (min_val, max_val, min_loc, max_loc)
+
+
 def print_stats(start_time, fish_caught, bait_used, rods_cast):
     time_ran = get_duration(then=start_time, now=datetime.now(), interval='default')
     gold_earned = fish_caught * 10
@@ -127,7 +150,7 @@ def print_stats(start_time, fish_caught, bait_used, rods_cast):
     logger.success('-----------------------')
 
 
-# Audio stream to detect bobber splash
+# Initialize Audio stream to detect bobber splash
 stream = p.open(format = FORMAT,
                 channels = CHANNELS,
                 rate = RATE,
@@ -136,7 +159,6 @@ stream = p.open(format = FORMAT,
                 frames_per_buffer = chunk,
                 input_device_index= audio_devices['input_device_index'],
                 output_device_index = audio_devices['output_device_index'])
-
 
 # Initialize Driver
 if use_driver:
@@ -149,51 +171,49 @@ time.sleep(1 + random.random())
 SetForegroundWindow(game_window_handle)
 if use_bait:
     driver.press_key_driver(bait_hotkey_driver)
-    # pg.press(bait_hotkey)
     bait_time = datetime.now()
 
-try:
-    with mss.mss() as sct:
-        while True:
-            if use_bait:
-                time_since_bait = get_duration(then=bait_time, now=datetime.now(), interval='minutes')
-                if time_since_bait >= 30:
-                    logger.info('Applying fishing bait...')
-                    driver.press_key_driver(bait_hotkey_driver)
-                    # pg.press(bait_hotkey)
-                    bait_used += 1
-                    bait_time = datetime.now()
-                    print_stats(start_time, fish_caught, bait_used, rods_cast)
-            # Cast fishing rod
-            driver.press_key_driver(fishing_hotkey_driver)
-            # pg.press(fishing_hotkey)
-            rods_cast += 1
-            time.sleep(2.7 + random.random())
-            # Take game screenshot
-            tmp_screenshot = sct.grab(game_window_rect)
-            screenshot = cv.cvtColor(np.array(tmp_screenshot), cv.COLOR_BGR2GRAY)
-            # Detect fishing bobber
-            methods = ['cv.TM_CCOEFF_NORMED']#, 'cv.TM_CCORR_NORMED', 'cv.TM_SQDIFF', 'cv.TM_SQDIFF_NORMED']
-            for meth in methods:
-                method = eval(meth)
-                # Apply template Matching
-                res = cv.matchTemplate(screenshot, template, method)
-                min_val, max_val, min_loc, max_loc = cv.minMaxLoc(res)
-                
-                if max_val > bobber_confidence:
-                    logger.success(f'Found bobber at {max_loc}')
-                    top_left = max_loc
-                    bottom_right = (top_left[0] + w, top_left[1] + h)
-                    bobber_center = ((top_left[0] + w / 2) + game_window_rect[0], (top_left[1] + h / 2) + game_window_rect[1])
+with mss.mss() as sct:
+    while True:
+        if use_bait:
+            time_since_bait = get_duration(then=bait_time, now=datetime.now(), interval='minutes')
+            if time_since_bait >= 30:  # Fishing bait has expired
+                logger.info('Applying fishing bait...')
+                driver.press_key_driver(bait_hotkey_driver)
+                bait_used += 1
+                bait_time = datetime.now()
 
-                    # Move cursor to the center of the bobber
-                    # try:
-                    #     mouse.move(bobber_center[0], bobber_center[1])
-                    # except ValueError:
-                    #     logger.warning(f'Value error when trying to move mouse to bobber. Coords: {bobber_center[0]}, {bobber_center[1]}')
-                    #     break
+                # "hack" to print stats every 30 minutes without repeating code
+                print_stats(start_time, fish_caught, bait_used, rods_cast)
 
-            # Detect caught fish via audio queue
+        # Cast fishing rod
+        driver.press_key_driver(fishing_hotkey_driver)
+        rods_cast += 1
+        time.sleep(2.7 + random.random())
+
+        # Take game screenshot
+        tmp_screenshot = sct.grab(game_window_rect)
+        screenshot = cv.cvtColor(np.array(tmp_screenshot), cv.COLOR_BGR2GRAY)
+
+        # cv.imshow('WoW', screenshot)
+        # key = cv.waitKey(1)
+        # if key == ord('q'):
+        #     cv.destroyAllWindows()
+        #     sys.exit()
+
+        # Detect fishing bobber
+        min_val, max_val, min_loc, max_loc = find_bobber(screenshot, template)
+
+        if max_val > bobber_confidence:
+            logger.success(f'Found bobber at {max_loc}')
+            top_left = max_loc
+            bottom_right = (top_left[0] + w, top_left[1] + h)
+            bobber_center = ((top_left[0] + w / 2) + game_window_rect[0], (top_left[1] + h / 2) + game_window_rect[1])
+
+            # Reset counter for next cast
+            no_bobber_counter = 0
+
+            # Listen to audio queue for fish catch.
             while True:
                 try:
                     input = stream.read(chunk)
@@ -214,7 +234,9 @@ try:
                     try:
                         driver.move_mouse(bobber_center)
                     except ValueError:
+                        logger.warning("I don't think we'll ever hit this. Breaking audio loop")
                         break
+                    # Successfully clicked what we think is the bobber location (not sure how to confirm yet)
                     fish_caught += 1
                     logger.info(f'Fish Caught: {fish_caught}')
                     time.sleep(1 + random.random())
@@ -239,7 +261,11 @@ try:
                 catch_time += 1
             catch_time = 0
             #p.close(stream)
-except Exception as e:
-    logger.error(e)
-    print_stats(start_time, fish_caught, bait_used, rods_cast)
-    exit(0)
+        # template matching couldn't detect the bobber. Confidence may need to be lowered or new screenshot.
+        else:
+            logger.warning("Couldn't find bobber.")
+            no_bobber_counter += 1
+
+            if no_bobber_counter >= 5:
+                logger.critical("Couldn't find the bobber 5 times in a row. Exiting the bot.")
+                sys.exit(1)
