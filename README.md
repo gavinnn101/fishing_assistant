@@ -68,7 +68,7 @@ If you think of any features you feel would be highly beneficial that aren't on 
 *  Open a terminal AS ADMIN in the interception installer location `fishing_assistant\Interception\command line installer` and run `.\install-interception.exe /install`. Must reboot the vm after.
 
 # Settings
-*  Set windows volume in VM to 100
+*  Set windows volume in VM to 100 (Possibly doesn't do anything. Should fact check this)
 *  In-game sound settings should look like this: https://gyazo.com/34f574700038c463de102db9a25a21a9
 * *  "Cable Input" selected
 * *  Master Volume at 50%
