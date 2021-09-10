@@ -195,12 +195,6 @@ with mss.mss() as sct:
         tmp_screenshot = sct.grab(game_window_rect)
         screenshot = cv.cvtColor(np.array(tmp_screenshot), cv.COLOR_BGR2GRAY)
 
-        # cv.imshow('WoW', screenshot)
-        # key = cv.waitKey(1)
-        # if key == ord('q'):
-        #     cv.destroyAllWindows()
-        #     sys.exit()
-
         # Detect fishing bobber
         min_val, max_val, min_loc, max_loc = find_bobber(screenshot, template)
 
@@ -210,11 +204,21 @@ with mss.mss() as sct:
             bottom_right = (top_left[0] + w, top_left[1] + h)
             bobber_center = ((top_left[0] + w / 2) + game_window_rect[0], (top_left[1] + h / 2) + game_window_rect[1])
 
+            # Draw rectangle around bobber
+            cv.rectangle(screenshot, top_left, bottom_right, (0,255,0), -1)
             # Reset counter for next cast
             no_bobber_counter = 0
 
             # Listen to audio queue for fish catch.
             while True:
+                # Show game screenshot with bobber marked. Useful for debugging.
+                cv.imshow('WoW', screenshot)
+                key = cv.waitKey(1)
+                if key == ord('q'):
+                    cv.destroyAllWindows()
+                    sys.exit()
+                
+                # Get audio level from game
                 try:
                     input = stream.read(chunk)
                     rms_value = rms(input)
