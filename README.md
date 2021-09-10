@@ -85,5 +85,6 @@ If you think of any features you feel would be highly beneficial that aren't on 
 
 # Potential Issues
 * Loud spikes of in-game noise may cause the bot to try and catch the bobber. I usually see this happen when I get a "friend has come online" popup.
+* * You can fix this specific instance by turning off notifications in-game Settings -> Interface -> Social -> Turn off `Online Friends` and `Offline Friends`
 * Bot will see a high volume level left over from the last run and think there is a fish caught
 * * I believe to fix this, I need to clear the audio stream after every catch/reset.
