@@ -1,19 +1,53 @@
 # Introduction
-Please follow the below sections in order CAREFULLY and let me know if you have any questions or run into any problems.
+Please read everything below even if you don't think it's important. You'll spend much less time reading it than I did writing it. Please follow the below sections in order CAREFULLY and let me know if you have any questions or run into any problems.
 
 
-This is just a personal project that I'm having fun with above all else. I'm working on it when I feel like it, not selling it, and sharing it with friends, privately, for free. My goal for this project is to be able to easily run and manage a large amount of fishing bots and not get banned. The security largely comes from using the interception driver that scans for your real keyboard/mouse and fakes the input from there instead of virtual inputs that most bots use and are typically detected. 
+This is just a personal project that I'm developing for free in my spare time to use for myself and close family/friends. Please do not leak any of the files! I'm putting a lot of time into security and it all goes out the window if the bot files get flagged or a security feature is patched.
 
 
-Managing the bots at scale will come from the next part of the project that I'm working on. I'm building a website where every user will be able to log into their account and manage all of their bots:
-* You will be able to start and stop the bots at any time
-* See real-time stats for each individual bot (run time, gold earned, fish caught, etc)
-* See real-time screenshots for each individual bot
-* See real-time logs for each individual bot
-* Send a message in-game as your bot character from the website (to implement later)
-* automatically vendor trash items(bait/greys/etc)(provided you have a vendor mount like a mammoth)
-* Automatically relog into the game if disconnected and resume fishing
-* * Feature Enhancement: Detect if it's reset day and sleep until servers are online
+Bot Access / Invites:
+Again, please do not leak the bot to anyone. If someone wants access to the bot, let me know. If it's someone I already know, they'll almost surely get access but I want to keep it under control. 
+
+
+The goal of the project is to be able to bot at scale(2+) bots at a time with high level anti-ban, high up-time(designed to run 24/7 on virtual machines), easy monitoring and maintence of all bots via website, with as little human intervention as possible. 
+
+# Features and Roadmap
+If you think of any features you feel would be highly beneficial that aren't on either of these lists, feel free to let me know :)
+
+🔴 - Not yet started / paused
+
+🟠 - Started working on feature (will be one of the next features released)
+
+🟡 - Feature implemented but little to no testing (use at own risk)
+
+🟢 - Feature fully implemented and working
+
+* Security:
+* * Interception Driver 🟢 - The security largely comes from using the interception driver that scans for your real keyboard/mouse and fakes the input from there instead of virtual inputs that most bots use and are typically detected.
+* * Code Obfuscation 🔴 - The code will by dynamically changed before each run to hopefully help against any signature checks
+* * Breaks 🔴 - You will be able to set up break schedules for your bots so that they will log out after (ex: 30-45 minutes) for (ex: 5-15 minutes) and then after playing for 2 hours, break for 1 hour, etc. In my experience, playtime hasn't seemed to make much of a difference in bans for me but I do plan to implement it just incase. 
+* * AI Generated Conversations 🔴 - I have access to OpenAI's GPT-3 which is an AI that can generate conversations/responses based on input. With this project largely being about running many(2+) bots at once, I plan to implement a feature where your bots will randomly have fake AI generated, WoW related(and other) conversations in guild chat or whispers to look less bot like. 
+* * * 🔴 This same idea could be used to respond to random players that whisper your bot but I'm leaning towards just ignoring them. To be decided... Can always be optional
+
+
+* Bot Management: 🟠
+* * Users will be able to login to <gavinnn.com/bot> and control all of their bots from the webpanel. This way you can start/stop your bots from anywhere. 
+* * * See screenshot from this other bot for a rough example: https://raw.githubusercontent.com/julianperrott/WowClassicGrindBot/master/images/Screenshot.png
+* * 🔴 Start and stop any of your bots at any time.
+* * 🔴 See real-time stats for each individual bot (run time, gold earned, fish caught, etc)
+* * 🔴 See real-time screenshots for each individual bot
+* * 🔴 See real-time logs for each individual bot
+* * 🔴 Send a message in-game as your bot character from the website (respond to whispers, guild chat, etc (to implement later)
+
+
+* General Notable Features:
+* * 🔴 Auto list fish auctions (I'm not sure how this could realistically be accomplished with this type of bot unless the user had a brutosaur.. I'll look into it but prob not)
+* * 🔴 Accurate gold per hour earned (The only way I know how is the TSM API but it's currently unavailable. The price of fish will have to be hard-coded until then I think..)
+* * 🟢 Automatically apply fishing bait every 30 minutes.
+* * 🟠 automatically vendor trash items(bait/greys/etc)(provided you have a vendor mount like a mammoth).
+* * 🟡 Automatically relog into the game if disconnected and resume fishing.
+* * 🟠 Feature Enhancement: Detect if it's reset day and sleep until servers are online.
+
 
 # Installing Dependencies
 * Installing Python:
@@ -43,6 +77,6 @@ Managing the bots at scale will come from the next part of the project that I'm 
 * `audio_threshold` in `fishing_main.py` can be changed if needed but should be good if volume settings are consistent.
 
 # Potential Issues
-* Loud noises around character may trigger a caught fish reaction (not tested/proven)
+* Loud spikes of in-game noise may cause the bot to try and catch the bobber. I usually see this happen when I get a "friend has come online" popup.
 * Bot will see a high volume level left over from the last run and think there is a fish caught
 * * I believe to fix this, I need to clear the audio stream after every catch/reset.
