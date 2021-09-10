@@ -67,7 +67,7 @@ If you think of any features you feel would be highly beneficial that aren't on 
 *  This is optional but should lead to a much lower chance of a ban. Set `use_driver = True` or `use_driver = False` to use virtual/pyautogui inputs.
 *  Open a terminal AS ADMIN in the interception installer location `fishing_assistant\Interception\command line installer` and run `.\install-interception.exe /install`. Must reboot the vm after.
 
-# Volume Settings
+# Settings
 *  Set windows volume in VM to 100
 *  In-game sound settings should look like this: https://gyazo.com/34f574700038c463de102db9a25a21a9
 * *  "Cable Input" selected
@@ -75,6 +75,13 @@ If you think of any features you feel would be highly beneficial that aren't on 
 * *  Sound set to "High"
 * *  All other sound effects turned off
 * `audio_threshold` in `fishing_main.py` can be changed if needed but should be good if volume settings are consistent.
+* In-game Graphics settings should look like this: https://gyazo.com/1d640c0c65b37d0450890d6fcdd3d9b2
+* * You can probably get away with different graphics settings but the main ones I would probably recommend are:
+* * * Resolution: 1280x720 (Windowed mode)
+* * * Resolution Scale: 1280x720 (100%)
+* * * Particle Density: Disabled
+* * * Liquid Detail: Fair (You can try higher but `low` will probably not work well)
+* * * All 3 `Environment` Settings: 1 (View Distance, Environment Detail, Ground Clutter. They're sliders at the bottom left)
 
 # Potential Issues
 * Loud spikes of in-game noise may cause the bot to try and catch the bobber. I usually see this happen when I get a "friend has come online" popup.
