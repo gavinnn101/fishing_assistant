@@ -261,6 +261,9 @@ with mss.mss() as sct:
                             time.sleep(5)
                         relog_counter = 0
                     break
+                else:
+                    # Successful catch, reset the counter or else the failsafe will activate at 5 overall missed splashes instead of 5 in a row.
+                    relog_counter = 0
                 # Adds and resets timer for how long the fishing rod has been in the water for its current cast. (used for timeout/reset)
                 catch_time += 1
             catch_time = 0
