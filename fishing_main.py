@@ -46,7 +46,7 @@ bait_hotkey = 'x'
 bait_hotkey_driver = KEYBOARD_MAPPING[bait_hotkey]
 use_bait = True
 found_fish = False
-bobber_confidence = 0.60  # Increase or take a better bobber screenshot if the bot is clicking random places(not the bobber). You probably shouldn't ever need to decrease.
+bobber_confidence = 0.80  # Increase or take a better bobber screenshot if the bot is clicking random places(not the bobber). You probably shouldn't ever need to decrease.
 
 template = cv.imread('bobber.jpg', 0)
 w, h = template.shape[::-1]
