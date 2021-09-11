@@ -65,7 +65,7 @@ swidth = 2
 Max_Seconds = 15
 catch_time=0
 catch_timeout=((RATE / chunk * Max_Seconds) + 7)  # If you find that the bot times out and recasts before the cast is actually over, you can increase 7 by 1 until it's good.
-audio_threshold = 20  # 20 should be fine based on readme.md volume settings but increase by 5 if it constantly thinks theres a catch before there really is.
+audio_threshold = 25  # 20 should be fine based on readme.md volume settings but increase by 5 if it constantly thinks theres a catch before there really is.
 audio_devices = get_audio_devices()
 # Audio variables
 #################
@@ -198,14 +198,24 @@ with mss.mss() as sct:
         # Detect fishing bobber
         min_val, max_val, min_loc, max_loc = find_bobber(screenshot, template)
 
+        # Show game screenshot. Useful for debugging.
+        logger.debug('Showing game screenshot before checking bobber confidence')
+        cv.imshow('WoW', screenshot)
+        key = cv.waitKey(1)
+        if key == ord('q'):
+            cv.destroyAllWindows()
+            sys.exit()
+
         if max_val > bobber_confidence:
-            logger.success(f'Found bobber at {max_loc}')
+            max_val = round(max_val, 2)
+            logger.success(f'Found bobber at {max_loc} with confidence {max_val}.')
             top_left = max_loc
             bottom_right = (top_left[0] + w, top_left[1] + h)
             bobber_center = ((top_left[0] + w / 2) + game_window_rect[0], (top_left[1] + h / 2) + game_window_rect[1])
 
             # Draw rectangle around bobber
-            cv.rectangle(screenshot, top_left, bottom_right, (0,255,0), -1)
+            logger.debug('Drawing rectangle around found bobber.')
+            cv.rectangle(screenshot, top_left, bottom_right, (0,255,0), 1)
             # Reset counter for next cast
             no_bobber_counter = 0
 
