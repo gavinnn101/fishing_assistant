@@ -197,6 +197,7 @@ with mss.mss() as sct:
 
         # Detect fishing bobber
         min_val, max_val, min_loc, max_loc = find_bobber(screenshot, template)
+        max_val = round(max_val, 2)
 
         # Show game screenshot. Useful for debugging.
         logger.debug('Showing game screenshot before checking bobber confidence')
@@ -207,7 +208,7 @@ with mss.mss() as sct:
             sys.exit()
 
         if max_val > bobber_confidence:
-            max_val = round(max_val, 2)
+            
             logger.success(f'Found bobber at {max_loc} with confidence {max_val}.')
             top_left = max_loc
             bottom_right = (top_left[0] + w, top_left[1] + h)
@@ -280,7 +281,7 @@ with mss.mss() as sct:
             #p.close(stream)
         # template matching couldn't detect the bobber. Confidence may need to be lowered or new screenshot.
         else:
-            logger.warning("Couldn't find bobber.")
+            logger.warning(f"Couldn't find bobber. Highest confidence: {max_val} at {max_loc}.")
             no_bobber_counter += 1
 
             if no_bobber_counter >= 5:
