@@ -81,7 +81,6 @@ If you think of any features you feel would be highly beneficial that aren't on 
 * * * Resolution: 1280x720 (Windowed mode)
 * * * Resolution Scale: 1280x720 (100%)
 * * * Preset Graphics Slider: Lowest / `1`
-* * * Particle Density: Disabled
 * * * Liquid Detail: Fair+ (I would not recommend setting it to `low`)
 
 # Potential Issues
