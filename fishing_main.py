@@ -41,8 +41,8 @@ def get_audio_devices():
 # Fishing variables
 use_driver = True
 fishing_hotkey = 'z'
-fishing_hotkey_driver = KEYBOARD_MAPPING[fishing_hotkey]
 bait_hotkey = 'x'
+fishing_hotkey_driver = KEYBOARD_MAPPING[fishing_hotkey]
 bait_hotkey_driver = KEYBOARD_MAPPING[bait_hotkey]
 use_bait = True
 found_fish = False
