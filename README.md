@@ -80,9 +80,9 @@ If you think of any features you feel would be highly beneficial that aren't on 
 * * You can probably get away with different graphics settings but the main ones I would probably recommend are:
 * * * Resolution: 1280x720 (Windowed mode)
 * * * Resolution Scale: 1280x720 (100%)
+* * * Preset Graphics Slider: Lowest / `1`
 * * * Particle Density: Disabled
-* * * Liquid Detail: Fair (You can try higher but `low` will probably not work well)
-* * * All 3 `Environment` Settings: 1 (View Distance, Environment Detail, Ground Clutter. They're sliders at the bottom left)
+* * * Liquid Detail: Fair+ (I would not recommend setting it to `low`)
 
 # Potential Issues
 * Loud spikes of in-game noise may cause the bot to try and catch the bobber. I usually see this happen when I get a "friend has come online" popup.
