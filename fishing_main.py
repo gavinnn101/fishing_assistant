@@ -1,21 +1,21 @@
-import sys
-from utils.easy_driver import EasyDriver
 import cv2 as cv
-import numpy as np
-import mss
-import pyautogui as pg
-import time
-import pyaudio
-import struct
 import math
+import mss
+import numpy as np
+import pyaudio
+import pyautogui as pg
 import random
-from win32gui import FindWindow, GetWindowRect, GetClientRect, SetForegroundWindow
+import struct
+import sys
+import time
+from datetime import datetime
+from interception_py.interception import *
 from loguru import logger
 from pyHM import mouse
-from interception_py.interception import *
-from utils.key_codes import KEYBOARD_MAPPING
-from datetime import datetime
+from win32gui import FindWindow, GetWindowRect, GetClientRect, SetForegroundWindow
 from utils.datetime_util import get_duration
+from utils.easy_driver import EasyDriver
+from utils.key_codes import KEYBOARD_MAPPING
 
 
 def get_audio_devices():
@@ -238,9 +238,10 @@ with mss.mss() as sct:
 
                 # Reset found_fish after bobber noises subside (rms_value < 1.0)
                 if found_fish and rms_value < 1.0:
+                    logger.debug('Now listening for catch.')
                     found_fish = False
 
-                if not found_fish:
+                if not found_fish and rms_value > 1.0:
                     logger.debug(f'Checking if {rms_value} is higher than {audio_threshold}')
                     if rms_value >= audio_threshold:
                         logger.success("Found catch!")
