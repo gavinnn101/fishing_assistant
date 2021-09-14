@@ -165,7 +165,7 @@ if use_driver:
     driver = EasyDriver()
 
 # Initialize bot
-logger.add('log.txt', level="INFO")
+logger.add('log.txt', level="DEBUG")
 start_time = datetime.now()
 time.sleep(1 + random.random())
 SetForegroundWindow(game_window_handle)
@@ -207,7 +207,7 @@ with mss.mss() as sct:
             cv.destroyAllWindows()
             sys.exit()
 
-        if max_val > bobber_confidence:
+        if max_val >= bobber_confidence:
             
             logger.success(f'Found bobber at {max_loc} with confidence {max_val}.')
             top_left = max_loc
@@ -235,51 +235,53 @@ with mss.mss() as sct:
                     rms_value = rms(input)
                 except:
                     continue
-                
-                # if rms_value >= 10:  # This will never print if the user has their sound low.
-                #     logger.debug(f'Sound Level: {rms_value}')
+
+                # Reset found_fish after bobber noises subside (rms_value < 1.0)
                 if found_fish and rms_value < 1.0:
                     found_fish = False
 
-                if not found_fish and rms_value > audio_threshold:
-                    logger.success("Found catch!")
-                    time.sleep(0.150 + random.random())
-                    # Right click the bobber to collect the loot.
-                    # Wrapped in try block because pyHM.right_click() gives an invalid inputs ValueError
-                    try:
-                        driver.move_mouse(bobber_center)
-                    except ValueError:
-                        logger.warning("I don't think we'll ever hit this. Breaking audio loop")
+                if not found_fish:
+                    logger.debug(f'Checking if {rms_value} is higher than {audio_threshold}')
+                    if rms_value >= audio_threshold:
+                        logger.success("Found catch!")
+                        time.sleep(0.150 + random.random())
+                        # Right click the bobber to collect the loot.
+                        # Wrapped in try block because pyHM.right_click() gives an invalid inputs ValueError
+                        try:
+                            driver.move_mouse(bobber_center)
+                        except ValueError:
+                            logger.warning("I don't think we'll ever hit this. Breaking audio loop")
+                            break
+                        # Successfully clicked what we think is the bobber location (not sure how to confirm yet)
+                        fish_caught += 1
+                        logger.info(f'Fish Caught: {fish_caught}')
+                        time.sleep(1 + random.random())
+                        found_fish = True
                         break
-                    # Successfully clicked what we think is the bobber location (not sure how to confirm yet)
-                    fish_caught += 1
-                    logger.info(f'Fish Caught: {fish_caught}')
-                    time.sleep(1 + random.random())
-                    found_fish = True
-                    break
-                if catch_time > catch_timeout:
-                    no_fish_casts += 1
-                    logger.warning("Timed out, never detected a splash.")
+                    if catch_time > catch_timeout:
+                        no_fish_casts += 1
+                        logger.warning("Timed out, never detected a splash.")
 
-                    # If we miss 5 catches in a row we can probably assume something is really wrong like our in-game pov is messed up or we're logged out
-                    # This assumes we got logged out and attempts to log us back in.
-                    # If it's a temporary problem and we're in-game hitting 'enter' I could see us getting stuck in the chatbox. Maybe unbind 'enter' on the bot toons
-                    relog_counter += 1
-                    if relog_counter >= 5:  # Assumes we got logged out and we'll try to reconnect
-                        logger.warning("We've failed to catch 5 fish in a row. Activating failsafe.")
-                        for i in range(0,4):  # Hit enter 3 times (Max amount needed to get back to the game from a recoverable login screen state.)
-                            driver.press_key_driver(KEYBOARD_MAPPING['enter'])
-                            time.sleep(5)
+                        # If we miss 5 catches in a row we can probably assume something is really wrong like our in-game pov is messed up or we're logged out
+                        # This assumes we got logged out and attempts to log us back in.
+                        # If it's a temporary problem and we're in-game hitting 'enter' I could see us getting stuck in the chatbox. Maybe unbind 'enter' on the bot toons
+                        relog_counter += 1
+                        if relog_counter >= 5:  # Assumes we got logged out and we'll try to reconnect
+                            logger.warning("We've failed to catch 5 fish in a row. Activating failsafe.")
+                            for i in range(0,4):  # Hit enter 3 times (Max amount needed to get back to the game from a recoverable login screen state.)
+                                # TODO: This should probably be replaced with closing the game and reopening via command line I think. Need to test.
+                                driver.press_key_driver(KEYBOARD_MAPPING['enter'])
+                                time.sleep(5)
+                            relog_counter = 0
+                        break
+                    else:
+                        # Successful catch, reset the counter or else the failsafe will activate at 5 overall missed splashes instead of 5 in a row.
                         relog_counter = 0
-                    break
-                else:
-                    # Successful catch, reset the counter or else the failsafe will activate at 5 overall missed splashes instead of 5 in a row.
-                    relog_counter = 0
-                # Adds and resets timer for how long the fishing rod has been in the water for its current cast. (used for timeout/reset)
-                catch_time += 1
-            catch_time = 0
-            #p.close(stream)
-        # template matching couldn't detect the bobber. Confidence may need to be lowered or new screenshot.
+                    # Adds and resets timer for how long the fishing rod has been in the water for its current cast. (used for timeout/reset)
+                    catch_time += 1
+                catch_time = 0
+                #p.close(stream)
+            # template matching couldn't detect the bobber. Confidence may need to be lowered or new screenshot.
         else:
             logger.warning(f"Couldn't find bobber. Highest confidence: {max_val} at {max_loc}.")
             no_bobber_counter += 1
