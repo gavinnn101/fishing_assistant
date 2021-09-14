@@ -237,7 +237,7 @@ with mss.mss() as sct:
                     continue
 
                 # Reset found_fish after bobber noises subside (rms_value < 1.0)
-                if found_fish and rms_value > 1.0:
+                if found_fish and rms_value < 1.0:
                     logger.debug('Now listening for catch.')
                     found_fish = False
 
