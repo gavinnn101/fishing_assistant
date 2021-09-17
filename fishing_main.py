@@ -46,7 +46,7 @@ fishing_hotkey_driver = KEYBOARD_MAPPING[fishing_hotkey]
 bait_hotkey_driver = KEYBOARD_MAPPING[bait_hotkey]
 use_bait = True
 found_fish = False
-bobber_confidence = 0.80  # Increase or take a better bobber screenshot if the bot is clicking random places(not the bobber). You probably shouldn't ever need to decrease.
+bobber_confidence = 0.75  # Increase or take a better bobber screenshot if the bot is clicking random places(not the bobber). You probably shouldn't ever need to decrease.
 
 template = cv.imread('bobber.jpg', 0)
 w, h = template.shape[::-1]
@@ -64,8 +64,8 @@ RATE = 16000
 swidth = 2
 Max_Seconds = 15
 catch_time=0
-catch_timeout=((RATE / chunk * Max_Seconds) + 7)  # If you find that the bot times out and recasts before the cast is actually over, you can increase 7 by 1 until it's good.
-audio_threshold = 25  # 20 should be fine based on readme.md volume settings but increase by 5 if it constantly thinks theres a catch before there really is.
+catch_timeout=((RATE / chunk * Max_Seconds) + 9)  # If you find that the bot times out and recasts before the cast is actually over, you can increase 7 by 1 until it's good.
+audio_threshold = 18  # 20 should be fine based on readme.md volume settings but increase by 5 if it constantly thinks theres a catch before there really is.
 audio_devices = get_audio_devices()
 # Audio variables
 #################
@@ -163,9 +163,11 @@ stream = p.open(format = FORMAT,
 # Initialize Driver
 if use_driver:
     driver = EasyDriver()
+    logger.debug(f'Keyboard Driver: {driver.keyboard_driver}')
+    logger.debug(f'Mouse Driver: {driver.mouse_driver}')
 
 # Initialize bot
-logger.add('log.txt', level="DEBUG")
+logger.add('log.txt', level="INFO") # Can change to DEBUG
 start_time = datetime.now()
 time.sleep(1 + random.random())
 SetForegroundWindow(game_window_handle)
@@ -242,7 +244,7 @@ with mss.mss() as sct:
                     found_fish = False
 
                 if not found_fish and rms_value > 1.0:
-                    logger.debug(f'Checking if {rms_value} is higher than {audio_threshold}')
+                    # logger.debug(f'Checking if {rms_value} is higher than {audio_threshold}')
                     if rms_value >= audio_threshold:
                         logger.success("Found catch!")
                         time.sleep(0.150 + random.random())
@@ -258,31 +260,18 @@ with mss.mss() as sct:
                         logger.info(f'Fish Caught: {fish_caught}')
                         time.sleep(1 + random.random())
                         found_fish = True
-                        break
-                    if catch_time > catch_timeout:
-                        no_fish_casts += 1
-                        logger.warning("Timed out, never detected a splash.")
-
-                        # If we miss 5 catches in a row we can probably assume something is really wrong like our in-game pov is messed up or we're logged out
-                        # This assumes we got logged out and attempts to log us back in.
-                        # If it's a temporary problem and we're in-game hitting 'enter' I could see us getting stuck in the chatbox. Maybe unbind 'enter' on the bot toons
-                        relog_counter += 1
-                        if relog_counter >= 5:  # Assumes we got logged out and we'll try to reconnect
-                            logger.warning("We've failed to catch 5 fish in a row. Activating failsafe.")
-                            for i in range(0,4):  # Hit enter 3 times (Max amount needed to get back to the game from a recoverable login screen state.)
-                                # TODO: This should probably be replaced with closing the game and reopening via command line I think. Need to test.
-                                driver.press_key_driver(KEYBOARD_MAPPING['enter'])
-                                time.sleep(5)
-                            relog_counter = 0
-                        break
-                    else:
                         # Successful catch, reset the counter or else the failsafe will activate at 5 overall missed splashes instead of 5 in a row.
                         relog_counter = 0
-                    # Adds and resets timer for how long the fishing rod has been in the water for its current cast. (used for timeout/reset)
-                    catch_time += 1
-                catch_time = 0
-                #p.close(stream)
-            # template matching couldn't detect the bobber. Confidence may need to be lowered or new screenshot.
+                        break
+                if catch_time >= catch_timeout:
+                    no_fish_casts += 1
+                    logger.warning(f"Never detected a splash. Fish timeouts: {no_fish_casts}.")
+                    break
+                # Fish hasn't been caught yet. Add to timer
+                catch_time += 1
+            catch_time = 0
+        #p.close(stream)
+        # template matching couldn't detect the bobber. Confidence may need to be lowered or new screenshot.
         else:
             logger.warning(f"Couldn't find bobber. Highest confidence: {max_val} at {max_loc}.")
             no_bobber_counter += 1

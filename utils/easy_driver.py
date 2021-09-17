@@ -7,7 +7,11 @@ class EasyDriver:
         # get screen size
         self.screen_width = GetSystemMetrics(0)
         self.screen_height = GetSystemMetrics(1)
-        self.driver = interception()
+        try:
+            self.driver = interception()
+        except Exception as e:
+            logger.critical("Couldn't create input driver. It is very likely not installed.")
+            logger.critical(f"Error: {e}")
         self.mouse_driver = self.get_driver_mouse()
         self.keyboard_driver = self.get_driver_keyboard()
 
