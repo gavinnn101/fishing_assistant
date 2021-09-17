@@ -285,7 +285,7 @@ with mss.mss() as sct:
                         try:
                             driver.move_mouse(bobber_center)
                         except ValueError:
-                            logger.warning("I don't think we'll ever hit this. Breaking audio loop")
+                            logger.warning("I don't think we'll ever hit this. Breaking audio loop from mailed driver.mouse_move")
                             break
                         # Successfully clicked what we think is the bobber location (not sure how to confirm yet)
                         fish_caught += 1
