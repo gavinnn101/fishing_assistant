@@ -137,6 +137,38 @@ def find_bobber(screenshot, template):
         return (min_val, max_val, min_loc, max_loc)
 
 
+def vendor_trash(mammoth_hotkey, ):
+    pass
+    # We should use the mammoth mount to vendor trash every X hour or every time we want to bank our fish.
+    # We should:
+        # Either check if X hours has passed our we can call this right before we'd call bank_fish().(probably the better way to do it. keeps it clean.)
+        # If so, call vendor_trash():
+            # press mammoth_hotkey to get on mount and bring out the vendor NPC.
+            # Interact with mammoth vendor via keybind - https://gaming.stackexchange.com/questions/12331/how-do-i-interact-with-selected-npc-without-clicking
+            # Auto sell trash ideally via addon like ElvUI. (We should figure out how to add bait to the trash list in ElvUI. I also don't think auto-sell is on by default. Have to click the button in your bags to vendor grays.)
+            # press mammoth_hotkey again to get off of mount.
+            # Optional afk break -> Go back to fishing
+
+
+
+def bank_fish(gbank_hotkey, ):
+    pass
+    # Guild bank has a 1 hour cooldown and is active for 5 minutes once used.
+    # We should call vendor_trash() before bank_fish().
+    # we should:
+        # In the main loop check if X hours has passed(I would say maybe 8)
+        # If so, call bank_fish()
+            # press gbank_hotkey
+            # template match for the guild logo(?) on the guild bank
+            # Once found, call driver to move mouse to it and right click (same as fishing)
+            # Once in the bank interface, I think we'll need to give each bank tab an icon and template match against it
+            # Once we find it and click into the bank tab, we can open our inventory
+            # Ideally we use an addon to auto-deposit the fish like TSM. Otherwise we'd have to for loop template match a fish icon against our inventory until it cant find anymore.
+            # Close the bank interface(probably with esc) and sleep for ~3-5 minutes to make sure the gbank is gone from our view.
+            # Continue fishing
+
+
+
 def print_stats(start_time, fish_caught, bait_used, rods_cast):
     time_ran = get_duration(then=start_time, now=datetime.now(), interval='default')
     gold_earned = fish_caught * 10
