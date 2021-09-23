@@ -309,5 +309,8 @@ with mss.mss() as sct:
             no_bobber_counter += 1
 
             if no_bobber_counter >= 5:
-                logger.critical("Couldn't find the bobber 5 times in a row. Exiting the bot.")
+                logger.critical("Couldn't find the bobber 5 times in a row, activating failsafe.")
+                logger.info('Taking screenshot before exiting.')
+                mss.shot(output="debug_screenshot.png")
+                logger.info('Screenshot saved. Now exiting...')
                 sys.exit(1)
