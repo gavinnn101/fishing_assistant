@@ -140,3 +140,5 @@ cython_debug/
 # Gavin's stuff
 .vscode/*
 log.txt
+bobber.JPG
+debug_screenshot.png
