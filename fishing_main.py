@@ -46,12 +46,25 @@ fishing_hotkey_driver = KEYBOARD_MAPPING[fishing_hotkey]
 bait_hotkey_driver = KEYBOARD_MAPPING[bait_hotkey]
 use_bait = True
 found_fish = False
-bobber_confidence = 0.75  # Increase or take a better bobber screenshot if the bot is clicking random places(not the bobber). You probably shouldn't ever need to decrease.
+bobber_confidence = 0.75  # Decreasing below 0.65 will probably give false positives. Take a better screenshot to get higher confidence.
 
 template = cv.imread('bobber.jpg', 0)
 w, h = template.shape[::-1]
 # Fishing variables
 #################
+
+####################
+# Shopping variables
+use_auto_vendor = True
+mammoth_hotkey = 'i'
+target_hotkey = 'k'
+interact_hotkey = 'l'
+vendor_interval = 180  # Minutes between selling trash items
+mammoth_hotkey_driver = KEYBOARD_MAPPING[mammoth_hotkey]
+target_hotkey_driver = KEYBOARD_MAPPING[target_hotkey]
+interact_hotkey_driver = KEYBOARD_MAPPING[interact_hotkey]
+# Shopping variables
+####################
 
 #################
 # Audio variables
@@ -137,24 +150,34 @@ def find_bobber(screenshot, template):
         return (min_val, max_val, min_loc, max_loc)
 
 
-def vendor_trash(mammoth_hotkey, ):
-    pass
-    # We should use the mammoth mount to vendor trash every X hour or every time we want to bank our fish.
-    # We should:
-        # Either check if X hours has passed our we can call this right before we'd call bank_fish().(probably the better way to do it. keeps it clean.)
-        # If so, call vendor_trash():
-            # press mammoth_hotkey to get on mount and bring out the vendor NPC.
-            # Interact with mammoth vendor via keybind - https://gaming.stackexchange.com/questions/12331/how-do-i-interact-with-selected-npc-without-clicking
-            # Auto sell trash ideally via addon like ElvUI. (We should figure out how to add bait to the trash list in ElvUI. I also don't think auto-sell is on by default. Have to click the button in your bags to vendor grays.)
-            # press mammoth_hotkey again to get off of mount.
-            # Optional afk break -> Go back to fishing
+def auto_vendor(mammoth_hotkey, target_hotkey, interact_hotkey):
+    """Vendors non-valuable fish via mount. Only tested with traveler's tundra mammoth and 'Vendor' addon."""
+    # Get on mount
+    logger.debug('getting on mount')
+    driver.press_key_driver(mammoth_hotkey)
+    time.sleep(3 + random.random())
+    # Target shop npc with target macro
+    logger.debug('targetting npc')
+    driver.press_key_driver(target_hotkey)
+    time.sleep(3 + random.random())
+    # Interact with target
+    logger.debug('interacting with npc / opening shop')
+    driver.press_key_driver(interact_hotkey)
+    time.sleep(3 + random.random())
+    # Vendor addon should now sell all of the non-valuable fish
+    logger.debug('about to sleep while Vendor addon sells trash')
+    time.sleep(5 + random.random())
+    # Close shop window
+    logger.debug('closing shop window')
+    driver.press_key_driver(KEYBOARD_MAPPING['esc'])
+    time.sleep(3 + random.random())
 
 
 
 def bank_fish(gbank_hotkey, ):
     pass
     # Guild bank has a 1 hour cooldown and is active for 5 minutes once used.
-    # We should call vendor_trash() before bank_fish().
+    # We should call auto_vendor() before bank_fish().
     # we should:
         # In the main loop check if X hours has passed(I would say maybe 8)
         # If so, call bank_fish()
@@ -206,9 +229,18 @@ SetForegroundWindow(game_window_handle)
 if use_bait:
     driver.press_key_driver(bait_hotkey_driver)
     bait_time = datetime.now()
+if use_auto_vendor:
+    vendor_time = datetime.now()
 
 with mss.mss() as sct:
     while True:
+        if use_auto_vendor:
+            time_since_vendor = get_duration(then=vendor_time, now=datetime.now(), interval='minutes')
+            if time_since_vendor >= vendor_interval:
+                logger.info('Now vendoring trash...')
+                time.sleep(5)
+                auto_vendor(mammoth_hotkey_driver, target_hotkey_driver, interact_hotkey_driver)
+                vendor_time = datetime.now()
         if use_bait:
             time_since_bait = get_duration(then=bait_time, now=datetime.now(), interval='minutes')
             if time_since_bait >= 30:  # Fishing bait has expired
