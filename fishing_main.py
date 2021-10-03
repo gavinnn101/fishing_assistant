@@ -160,17 +160,18 @@ def auto_vendor(mammoth_hotkey, target_hotkey, interact_hotkey):
     logger.debug('targetting npc')
     driver.press_key_driver(target_hotkey)
     time.sleep(3 + random.random())
-    # Interact with target
-    logger.debug('interacting with npc / opening shop')
-    driver.press_key_driver(interact_hotkey)
-    time.sleep(3 + random.random())
-    # Vendor addon should now sell all of the non-valuable fish
-    logger.debug('about to sleep while Vendor addon sells trash')
-    time.sleep(5 + random.random())
-    # Close shop window
-    logger.debug('closing shop window')
-    driver.press_key_driver(KEYBOARD_MAPPING['esc'])
-    time.sleep(3 + random.random())
+    for _ in range(0,2):  # 'Vendor' addon can only sell a limited items every time you open the shop.
+        # Interact with target
+        logger.debug('interacting with npc / opening shop')
+        driver.press_key_driver(interact_hotkey)
+        time.sleep(3 + random.random())
+        # Vendor addon should now sell all of the non-valuable fish
+        logger.debug('about to sleep while Vendor addon sells trash')
+        time.sleep(5 + random.random())
+        # Close shop window
+        logger.debug('closing shop window')
+        driver.press_key_driver(KEYBOARD_MAPPING['esc'])
+        time.sleep(3 + random.random())
 
 
 
