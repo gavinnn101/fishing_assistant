@@ -46,7 +46,7 @@ fishing_hotkey_driver = KEYBOARD_MAPPING[fishing_hotkey]
 bait_hotkey_driver = KEYBOARD_MAPPING[bait_hotkey]
 use_bait = True
 found_fish = False
-bobber_confidence = 0.75  # Decreasing below 0.65 will probably give false positives. Take a better screenshot to get higher confidence.
+bobber_confidence = 0.70  # Decreasing below 0.65 will probably give false positives. Take a better screenshot to get higher confidence.
 
 template = cv.imread('bobber.jpg', 0)
 w, h = template.shape[::-1]
