@@ -1,3 +1,10 @@
+# READ THIS!!!
+This was a private project for fun but I stopped running my bot farm and working on the project so I have no need to keep it private. I might offer minimal support and updates but don't expect any. The bot is fully functionable if you have a good bobber image and settings, my 6 accounts would run for 5+ days at a time typically but there is some instability. I will admit that a few of my accounts were banned after running 24/7 for 2 months straight on max pop realms. I fully believe the script is undetected if you bot reasonable hours to dodge in-game reports but of course, use at your own risk.
+
+
+Discord: GaviNNN#3281 - If you want to pay me for features or support or to chat feel free but if you're asking for a ton of free support, I'll probably ignore you. Sorry, this project was never intended to be public.
+
+
 # Introduction
 Please read everything below even if you don't think it's important. You'll spend much less time reading it than I did writing it. Please follow the below sections in order CAREFULLY and let me know if you have any questions or run into any problems.
 
@@ -45,7 +52,8 @@ If you think of any features you feel would be highly beneficial that aren't on 
 * * 🔴 Auto list fish auctions (I'm not sure how this could realistically be accomplished with this type of bot unless the user had a brutosaur.. I'll look into it but prob not)
 * * 🔴 Accurate gold per hour earned (The only way I know how is the TSM API but it's currently unavailable. The price of fish will have to be hard-coded until then I think..)
 * * 🟢 Automatically apply fishing bait every 30 minutes.
-* * 🟠 automatically vendor trash items(bait/greys/etc)(provided you have a vendor mount like a mammoth).
+* * 🟢 automatically vendor trash items(bait/greys/etc)(provided you have a vendor mount like a mammoth).
+* * * I've implented this with a combo of ingame vendor addons and a mammoth mount. You'll need to read the code and work it out yourself.
 * * 🟡 Automatically relog into the game if disconnected and resume fishing.
 * * 🟠 Feature Enhancement: Detect if it's reset day and sleep until servers are online.
 
@@ -66,6 +74,7 @@ If you think of any features you feel would be highly beneficial that aren't on 
 
 # Driver Notes
 *  This is optional but should lead to a much lower chance of a ban. Set `use_driver = True` or `use_driver = False` to use virtual/pyautogui inputs.
+*  * Virtual inputs aren't coded but can be easily added in place of the driver.
 *  Open a terminal AS ADMIN in the interception installer location `fishing_assistant\Interception\command line installer` and run `.\install-interception.exe /install`. Must reboot the vm after.
 
 # Settings
@@ -85,5 +94,5 @@ If you think of any features you feel would be highly beneficial that aren't on 
 # Potential Issues
 * Loud spikes of in-game noise may cause the bot to try and catch the bobber. I usually see this happen when I get a "friend has come online" popup.
 * * You can fix this specific instance by turning off notifications in-game Settings -> Interface -> Social -> Turn off `Online Friends` and `Offline Friends`
-* Bot will see a high volume level left over from the last run and think there is a fish caught
-* * I believe to fix this, I need to clear the audio stream after every catch/reset.
+* ~~Bot will see a high volume level left over from the last run and think there is a fish caught~~ fixed
+
