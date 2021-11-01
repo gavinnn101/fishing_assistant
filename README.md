@@ -96,3 +96,6 @@ If you think of any features you feel would be highly beneficial that aren't on 
 * * You can fix this specific instance by turning off notifications in-game Settings -> Interface -> Social -> Turn off `Online Friends` and `Offline Friends`
 * ~~Bot will see a high volume level left over from the last run and think there is a fish caught~~ fixed
 
+
+## License
+[GPL](https://choosealicense.com/licenses/gpl-3.0/)
