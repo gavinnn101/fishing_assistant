@@ -5,6 +5,9 @@ This was a private project for fun but I stopped running my bot farm and working
 Discord: GaviNNN#3281 - If you want to pay me for features or support or to chat feel free but if you're asking for a ton of free support, I'll probably ignore you. Sorry, this project was never intended to be public.
 
 
+![Progress Report Screenshot](https://i.imgur.com/M6MIgMU.png)
+
+
 # Introduction
 Please read everything below even if you don't think it's important. You'll spend much less time reading it than I did writing it. Please follow the below sections in order CAREFULLY and let me know if you have any questions or run into any problems.
 
