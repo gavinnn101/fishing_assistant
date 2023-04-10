@@ -1,4 +1,6 @@
 # READ THIS!!!
+This is the original version of the dragonflight fishing bot found [here](https://github.com/gavinnn101/fishing_assistant_dragonflight). Click the link for the most recent version of the bot.
+
 This was a private project for fun but I stopped running my bot farm and working on the project so I have no need to keep it private. I might offer minimal support and updates but don't expect any. The bot is fully functionable if you have a good bobber image and settings, my 6 accounts would run for 5+ days at a time typically but there is some instability. I will admit that a few of my accounts were banned after running 24/7 for 2 months straight on max pop realms. I fully believe the script is undetected if you bot reasonable hours to dodge in-game reports but of course, use at your own risk.
 
 
